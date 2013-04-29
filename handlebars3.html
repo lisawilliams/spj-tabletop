@@ -6,21 +6,55 @@
   <body>
     <h1>Some really crazy weather</h1>
     
-    <div id="content"></div>
+  <!-- 
+  So this example works in the sense that it does put data from the spreadsheet
+    into individual cells in an HTML table.  But for reasons I don't understand, 
+    the code below takes the HTML table header rows and puts them UNDERNEATH
+    the cells with the data in it ~~ so the table header rows "City" and Temperature"
+    appear at the BOTTOM of the table, instead of at the top, where they are intended
+    to go.  Why?  LW
     
+    Update: it was putting it on the bottom because <table border> and the header
+    row were above <div id =content>, which the script is pulling from.  Once inside,
+    header rows are now at the top.  However, cells below the header row have no border.
+ -->
+ 
+ <!-- This is the #content div that the script at the bottom is looking for
+ -->
+      <div id="content">
+      
+    
+      <!-- Here's some CSS I copied.  It does a nice job of styling the header row, but 
+      doesn't do anything to the rows below the header row. 
+      -->
+      <style type="text/css">
+			table.myTable { border-collapse:collapse; }
+			table.myTable td, table.myTable th { border:1px solid black;padding:20px; }
+	  </style>
+	<!-- Be sure to place the above styles (i.e. everything between the <style></style> tags) into the document 'head' (i.e. between the <head></head> tags. Everything below goes inside the <body></body> tags) -->
+	<table class="myTable">
+	
+	
+<!-- Header row for the table.  It must be outside the <script> tag or it will repeat 
+for each line, making each city its own separate table with one header row and one 
+row of data below. -->
+
+<tr><th>City</th><th>Temperature</th></tr>
+  
+<!-- Here's the script using handlebars.js.  This calls the data and populates
+the cells.  -->
+   
     <script id="weather-template" type="text/x-handlebars-template"/>
-    
-    <table border="1">
-<tr>
-<th>City</th>
-<th>Temperature</th>
-</tr>
+
+
 <tr>
 <td>{{city}}</td>
 
 <td>{{temperature}}</td>
 </tr>
-</table>
+
+<!-- Here's stuff from the original example by Andy Boyle that I commented out to play around with 
+putting the data in tables.  
 <br><br>
       <div class="entry">
         <h2>{{city}}</h2>
@@ -30,7 +64,13 @@
           Wind: {{wind}} MPH </br>
         </div>
       </div>
+ -->
     </script>
+    
+    </table>
+    </div>
+    
+    <!-- Heavy lifting part of the script. -->
 
     <!-- Don't need jQuery for Tabletop, but using it for this example -->
     <script type="text/javascript" src="js/handlebars.js"></script>
