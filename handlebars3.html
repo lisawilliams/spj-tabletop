@@ -1,7 +1,20 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link href="../common/cats.css" media="screen" rel="stylesheet" type="text/css" />
+  
+
+    
+    <style type="text/css">
+			table.myTable { border-collapse:collapse; }
+			table.myTable td, table.myTable th { border:1px solid black;padding:0px; }
+		
+	  </style>
+
+	  
+	<!-- Be sure to place the above styles (i.e. everything between the <style></style> tags) 
+	into the document 'head' (i.e. between the <head></head> tags. 
+	Everything below goes inside the <body></body> tags) -->
+  
   </head>
   <body>
     <h1>Some really crazy weather</h1>
@@ -27,19 +40,20 @@
       <!-- Here's some CSS I copied.  It does a nice job of styling the header row, but 
       doesn't do anything to the rows below the header row. 
       -->
-      <style type="text/css">
-			table.myTable { border-collapse:collapse; }
-			table.myTable td, table.myTable th { border:1px solid black;padding:20px; }
-	  </style>
-	<!-- Be sure to place the above styles (i.e. everything between the <style></style> tags) into the document 'head' (i.e. between the <head></head> tags. Everything below goes inside the <body></body> tags) -->
+      
+
 	<table class="myTable">
 	
-	
+
 <!-- Header row for the table.  It must be outside the <script> tag or it will repeat 
 for each line, making each city its own separate table with one header row and one 
 row of data below. -->
 
-<tr><th>City</th><th>Temperature</th></tr>
+<!-- It turns out the 'width' property can be applied to both <th> and <tr> tags, which 
+solves my spacing problem, although I still can't figure out how to get a border
+on the table cells that are below the <script id=> line.  -->
+
+<th width = 220px>City</th><th width = 220px>Temperature</th></tr>
   
 <!-- Here's the script using handlebars.js.  This calls the data and populates
 the cells.  -->
@@ -48,9 +62,8 @@ the cells.  -->
 
 
 <tr>
-<td>{{city}}</td>
-
-<td>{{temperature}}</td>
+        <td width = 220px>{{city}}</td>
+		<td width = 220 px: align = "center" border ="1" >{{temperature}}</td>
 </tr>
 
 <!-- Here's stuff from the original example by Andy Boyle that I commented out to play around with 
