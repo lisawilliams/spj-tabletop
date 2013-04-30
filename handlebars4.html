@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  
+
+    
+    <style type="text/css">
+			table.myTable { border-collapse:collapse; }
+			table.myTable td, table.myTable th { border:1px solid black;padding:0px; }
+
+	  </style>
+
+
+	<!-- Be sure to place the above styles (i.e. everything between the <style></style> tags) 
+	into the document 'head' (i.e. between the <head></head> tags. 
+	Everything below goes inside the <body></body> tags) -->
+  
+  </head>
+  <body>
+    <h1>Some really crazy weather</h1>
+    
+  <!-- 
+  So this example works in the sense that it does put data from the spreadsheet
+    into individual cells in an HTML table.  But for reasons I don't understand, 
+    the code below takes the HTML table header rows and puts them UNDERNEATH
+    the cells with the data in it ~~ so the table header rows "City" and Temperature"
+    appear at the BOTTOM of the table, instead of at the top, where they are intended
+    to go.  Why?  LW
+    
+    Update: it was putting it on the bottom because <table border> and the header
+    row were above <div id =content>, which the script is pulling from.  Once inside,
+    header rows are now at the top.  However, cells below the header row have no border.
+ -->
+ 
+ <!-- This is the #content div that the script at the bottom is looking for
+ -->
+      <div id="content">
+      
+    
+      <!-- Here's some CSS I copied.  It does a nice job of styling the header row, but 
+      doesn't do anything to the rows below the header row. 
+      -->
+      
+
+	<table class="myTable">
+
+
+<!-- Header row for the table.  It must be outside the <script> tag or it will repeat 
+for each line, making each city its own separate table with one header row and one 
+row of data below. -->
+
+<!-- It turns out the 'width' property can be applied to both <th> and <tr> tags, which 
+solves my spacing problem, although I still can't figure out how to get a border
+on the table cells that are below the <script id=> line.  -->
+
+<th width = 220px>City</th><th width = 220px>Temperature</th></tr>
+  
+<!-- Here's the script using handlebars.js.  This calls the data and populates
+the cells.  -->
+   
+    <script id="weather-template" type="text/x-handlebars-template"/>
+
+
+<tr>
+        <td width = 220px>{{city}}</td>
+		<td width = 220 px: align = "center" border ="1" >{{temperature}}</td>
+</tr>
+
+<!-- Here's stuff from the original example by Andy Boyle that I commented out to play around with 
+putting the data in tables.  
+<br><br>
+      <div class="entry">
+        <h2>{{city}}</h2>
+        <h3>Rain: {{amount}} inches</h3>
+        <div class="body">
+          Temperature: {{temperature}}F</br>
+          Wind: {{wind}} MPH </br>
+        </div>
+      </div>
+ -->
+    </script>
+    
+    </table>
+    </div>
+    
+    <!-- Heavy lifting part of the script. -->
+
+    <!-- Don't need jQuery for Tabletop, but using it for this example -->
+    <script type="text/javascript" src="js/handlebars.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/tabletop.js"></script>
+    <script type="text/javascript">
+      var public_spreadsheet_url = 'https://docs.google.com/spreadsheet/pub?key=0ApLwuu1HQNO7dEdLbnlNZ25NQ095X2k3RmdEaWZlSXc&output=html';
+
+      $(document).ready( function() {
+        Tabletop.init( { key: public_spreadsheet_url,
+                         callback: showInfo,
+                         parseNumbers: true } );
+      });
+        
+      function showInfo(data, tabletop) {
+        var source   = $("#weather-template").html();
+        var template = Handlebars.compile(source);
+        //you don't really need to cache this unless you're using it more than once
+        var $tableDiv = $('.myTable');
+        //declare rows outside of .each
+        var rows = '';
+        
+        $.each( tabletop.sheets("weather").all(), function(i, cat) {
+          var html = template(cat);
+          //then add each element as you compile it
+          rows += html;
+
+          //or just append it to the cached div
+          //$tableDiv.append(html)
+        });
+        $tableDiv.append(rows);
+      }
+    
+      document.write("The published spreadsheet is located at <a target='_new' href='" + public_spreadsheet_url + "'>" + public_spreadsheet_url + "</a>");    
+    </script>
+  </body>
+</html>
